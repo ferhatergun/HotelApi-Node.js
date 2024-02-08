@@ -1,6 +1,6 @@
-import userModel from "../models/userModel";
+import userModel from "../models/userModel.js";
 import bcryptjs from "bcryptjs";
-import { Jwt } from "jsonwebtoken";
+import Jwt from "jsonwebtoken";
 
 const register = async (req, res) => {
     const {username,email,password}=req.body;
@@ -16,6 +16,12 @@ const register = async (req, res) => {
         const newUser = new userModel({
             ...req.body,
             password:hashedPassword
+        })
+        await newUser.save()
+        res.status(201).json({
+            success:true,
+            message:"User created successfully",
+            newUser
         })
         
     } catch (error) {
